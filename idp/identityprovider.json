@@ -1,0 +1,19 @@
+
+{
+    "idp_name": "http://identityprovider:9000",
+    "port": 9000,
+    "client_config": [
+      {
+        "client_id": "foo",
+        "client_secret": "bar",
+        "redirect_uris": [
+          "https://authenticate.pomerium.localhost:8443/oauth2/callback"
+        ]
+      }
+    ],
+    "claim_mapping": {
+      "openid": [ "sub" ],
+      "email": [ "email", "email_verified" ],
+      "profile": [ "name", "nickname" ]
+    }
+  }

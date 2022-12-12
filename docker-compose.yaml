@@ -1,0 +1,24 @@
+version: "3"
+services:  
+  identityprovider:
+    image: qlik/simple-oidc-provider:0.2.2
+    environment:
+      - CONFIG_FILE=/etc/identityprovider.json
+      - USERS_FILE=/etc/identityprovider-users.json 
+    volumes:
+      - ./idp/identityprovider.json:/etc/identityprovider.json:ro
+      - ./idp/identityprovider-users.json:/etc/identityprovider-users.json:ro
+    ports:
+      - 9000:9000
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000 
+
+  verify:
+    image: pomerium/verify:latest
+    #extra_hosts:
+    #  - "somehost:162.242.195.82"
+    ports:
+      - 8000:8000
