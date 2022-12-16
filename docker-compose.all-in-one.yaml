@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+  pomerium.localhost:
+    image: pomerium/pomerium:v0.20.0
+    volumes:
+      ## Mount your domain's certificates : https://www.pomerium.com/docs/reference/certificates
+      - ./all-in-one/server.pem:/pomerium/server.pem:ro
+      - ./all-in-one/server.key:/pomerium/server.key:ro
+
+      ## Mount your config file : https://www.pomerium.com/docs/reference/
+      - ./all-in-one/config.yaml:/pomerium/config.yaml:ro
+    environment:
+      #POMERIUM_DEBUG: "true"
+      LOG_LEVEL: info
+    ports:
+      - 8443:8443
+      - 5431:5431
+      - 5433:5433

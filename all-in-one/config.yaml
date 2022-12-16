@@ -1,0 +1,46 @@
+# See detailed configuration settings : https://www.pomerium.com/docs/reference/
+log_level: info
+
+address: 0.0.0.0:8443
+
+# this is the domain the identity provider will callback after a user authenticates
+authenticate_service_url: https://authenticate.pomerium.localhost:8443
+
+####################################################################################
+# Certificate settings:  https://www.pomerium.com/docs/reference/certificates.html #
+# The example below assumes a certificate and key file will be mounted to a volume #
+# available to the  Docker image.                                                  #
+####################################################################################
+certificate_file: /pomerium/server.pem
+certificate_key_file: /pomerium/server.key
+ 
+##################################################################################
+# Identity provider settings : https://www.pomerium.com/docs/identity-providers/ #
+# The keys required in this section vary depending on your IdP. See the          #
+# appropriate docs for your IdP to configure Pomerium accordingly.               #
+##################################################################################
+idp_provider_url: http://identityprovider:9000
+idp_provider: oidc
+idp_client_id: foo
+idp_client_secret: bar
+ 
+# Generate 256 bit random keys  e.g. `head -c32 /dev/urandom | base64`
+cookie_secret: V2JBZk0zWGtsL29UcFUvWjVDWWQ2UHExNXJ0b2VhcDI=
+ 
+# https://pomerium.io/reference/#routes
+routes:
+  - from: https://grafana.pomerium.localhost:8443
+    to: http://grafana:3000
+    policy:
+      - allow:
+          or:
+            - domain:
+                is: example.org
+  - from: https://verify.pomerium.localhost:8443
+    to: http://verify:8000
+    pass_identity_headers: true
+    policy:
+      - allow:
+          or:
+            - domain:
+                is: example.org

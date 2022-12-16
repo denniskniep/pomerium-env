@@ -11,6 +11,15 @@ services:
     ports:
       - 9000:9000
 
+  db:
+    image: postgres:15.1-alpine
+    environment:
+      POSTGRES_DB: pomerium
+      POSTGRES_USER: pom_user
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432 
+
   grafana:
     image: grafana/grafana
     ports:

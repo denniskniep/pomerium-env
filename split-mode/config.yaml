@@ -1,0 +1,17 @@
+# https://pomerium.io/reference/#routes
+routes:
+  - from: https://grafana.pomerium.localhost:8443
+    to: http://grafana:3000
+    policy:
+      - allow:
+          or:
+            - domain:
+                is: example.org
+  - from: https://verify.pomerium.localhost:8443
+    to: http://verify:8000
+    pass_identity_headers: true
+    policy:
+      - allow:
+          or:
+            - domain:
+                is: example.org
