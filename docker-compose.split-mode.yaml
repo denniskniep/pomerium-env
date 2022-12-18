@@ -1,7 +1,7 @@
 version: "3"
 services:  
   pomerium-databroker:
-    image: pomerium/pomerium:v0.20.0
+    image: pomerium/pomerium:debug-custom-v0.20.0
     environment:
       SERVICES: databroker
       SHARED_SECRET: tYEwhzL0jWssLIkRpVLxN0/EZdP/3sm4c3wRWTVKPDs=
@@ -21,8 +21,17 @@ services:
       #POMERIUM_DEBUG: "true"
       #LOG_LEVEL: debug
 
+      DEBUG_ADDRESS: 0.0.0.0
+      DEBUG_PORT: 9999
+    ports:
+      - 9991:9999
+    #entrypoint: /debug-entrypoint.sh
+    #command: "--config /pomerium/config.yaml"
+    cap_add:
+      - SYS_PTRACE
+
   pomerium-authenticate:
-    image: pomerium/pomerium:v0.20.0
+    image: pomerium/pomerium:debug-custom-v0.20.0
     environment:
       SERVICES: authenticate
       SHARED_SECRET: tYEwhzL0jWssLIkRpVLxN0/EZdP/3sm4c3wRWTVKPDs=
@@ -46,11 +55,20 @@ services:
 
       #POMERIUM_DEBUG: "true"
       #LOG_LEVEL: debug
+
+      DEBUG_ADDRESS: 0.0.0.0
+      DEBUG_PORT: 9999
     ports:
       - 7443:8443
+      - 9992:9999
+    #entrypoint: /debug-entrypoint.sh
+    #command: "--config /pomerium/config.yaml"
+    cap_add:
+      - SYS_PTRACE
+
 
   pomerium-proxy:
-    image: pomerium/pomerium:v0.20.0
+    image: pomerium/pomerium:debug-custom-v0.20.0
     environment:
       SERVICES: proxy
       SHARED_SECRET: tYEwhzL0jWssLIkRpVLxN0/EZdP/3sm4c3wRWTVKPDs=
@@ -70,14 +88,23 @@ services:
 
       #POMERIUM_DEBUG: "true"
       #LOG_LEVEL: debug
+
+      DEBUG_ADDRESS: 0.0.0.0
+      DEBUG_PORT: 9999
     volumes:
       ## Mount your config file : https://www.pomerium.com/docs/reference/
       - ./split-mode/config.yaml:/pomerium/config.yaml:ro
     ports:
       - 8443:8443
+      - 9993:9999
+    #entrypoint: /debug-entrypoint.sh
+    #command: "--config /pomerium/config.yaml"
+    cap_add:
+      - SYS_PTRACE
+
 
   pomerium-authorize:
-    image: pomerium/pomerium:v0.20.0
+    image: pomerium/pomerium:debug-custom-v0.20.0
     environment:
       SERVICES: authorize
       SHARED_SECRET: tYEwhzL0jWssLIkRpVLxN0/EZdP/3sm4c3wRWTVKPDs=
@@ -101,6 +128,15 @@ services:
 
       #POMERIUM_DEBUG: "true"
       #LOG_LEVEL: debug
+
+      DEBUG_ADDRESS: 0.0.0.0
+      DEBUG_PORT: 9999
     volumes:
       ## Mount your config file : https://www.pomerium.com/docs/reference/
       - ./split-mode/config.yaml:/pomerium/config.yaml:ro
+    ports:
+      - 9994:9999
+    #entrypoint: /debug-entrypoint.sh
+    #command: "--config /pomerium/config.yaml"
+    cap_add:
+      - SYS_PTRACE

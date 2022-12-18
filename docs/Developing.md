@@ -1,4 +1,4 @@
-# Developing
+# Developing 
 https://www.pomerium.com/docs/deploying/from-source
 
 ## Create local certs
@@ -20,6 +20,59 @@ Go to pomerium repository and create `.config.yaml`
 ```
 sudo docker-compose up
 ```
+
+## Start
+Launch `.vscode/launch.json` target `debug pomerium`
+
+# Debugging Split Mode
+
+Uncomment all `entrypoint` and `command` properties in `docker-compose.split-mode.yaml`
+
+```
+sudo docker-compose -f docker-compose.yaml -f docker-compose.split-mode.yaml up
+```
+
+Add to `.vscode/launch.json` follwing configs:
+```
+{
+      "name": "Connect to databroker",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "remotePath": "/go/src/github.com/pomerium/pomerium/",
+      "port": 9991,
+      "host": "127.0.0.1",
+    },
+    {
+      "name": "Connect to authenticate",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "remotePath": "/go/src/github.com/pomerium/pomerium/",
+      "port": 9992,
+      "host": "127.0.0.1",
+    },
+    {
+      "name": "Connect to proxy",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "remotePath": "/go/src/github.com/pomerium/pomerium/",
+      "port": 9993,
+      "host": "127.0.0.1",
+    },
+    {
+      "name": "Connect to authorize",
+      "type": "go",
+      "request": "attach",
+      "mode": "remote",
+      "remotePath": "/go/src/github.com/pomerium/pomerium/",
+      "port": 9994,
+      "host": "127.0.0.1",
+    }
+```
+
+Important is to initially connect to every service with VS-Code launch configs.
 
 # URL Mapping:
 
@@ -94,6 +147,10 @@ reproxy contains a handler for re-proxying traffic through the http controlplane
 
 ## Rego/OPA
 `pomerium/pkg/policy/rules/rules.go` contains useful pre-defined rego AST rules.
+
+
+Add custom rego in route policy with:
+SubPolicies
 
 
 `pomerium/pkg/policy/parser/parser.go` is a parser for Pomerium Policy Language.
